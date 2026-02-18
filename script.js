@@ -237,7 +237,7 @@ checkoutBtn.addEventListener("click", () => {
     trocoLine = `\n💰 *TROCO PARA:* R$ ${parseFloat(changeValue.value).toFixed(2)}\n💵 *TROCO A DEVOLVER:* R$ ${trocoVal.toFixed(2)}`;
   }
 
-  const rawMessage =
+  const message = encodeURIComponent(
     `🍔 *NOVO PEDIDO - ABACAXI BURGER* 🍔\n\n` +
     `━━━━━━━━━━━━━━━━━━━━\n\n` +
     `📋 *ITENS DO PEDIDO:*\n\n` +
@@ -248,19 +248,8 @@ checkoutBtn.addEventListener("click", () => {
     `${enderecoLine}` +
     `${paymentLine}${trocoLine}\n\n` +
     `━━━━━━━━━━━━━━━━━━━━\n\n` +
-    `⏰ Pedido: ${new Date().toLocaleString("pt-BR")}`;
-
-  const message = [...rawMessage]
-    .map(c => {
-      const code = c.codePointAt(0);
-      if (code > 127) {
-        return encodeURIComponent(c);
-      }
-      return c;
-    })
-    .join("")
-    .replace(/ /g, "%20")
-    .replace(/\n/g, "%0A");
+    `⏰ Pedido: ${new Date().toLocaleString("pt-BR")}`
+  );
 
   window.open(`https://wa.me/63992863557?text=${message}`, "_blank");
 
