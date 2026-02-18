@@ -18,6 +18,169 @@
     />
     <link rel="stylesheet" href="styles/output.css" />
     <title>Abacaxi Burger - A melhor hamburgueria</title>
+    <style>
+      /* Classes extras necessárias para a modal */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.6);
+        z-index: 99;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+      .modal-overlay.active {
+        display: flex;
+      }
+      .modal-box {
+        background: #fff;
+        border-radius: 0.75rem;
+        width: 100%;
+        max-width: 580px;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      }
+      .modal-header {
+        padding: 1.25rem 1.5rem;
+        border-bottom: 2px solid #f3f4f6;
+        flex-shrink: 0;
+        background: #fff;
+      }
+      .modal-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem 1.5rem;
+      }
+      .modal-footer {
+        padding: 1rem 1.5rem;
+        border-top: 2px solid #f3f4f6;
+        flex-shrink: 0;
+        background: #fff;
+      }
+      .cart-item-card {
+        background: #f9fafb;
+        border-radius: 0.5rem;
+        padding: 0.75rem;
+        margin-bottom: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid #e5e7eb;
+      }
+      .qty-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 2px solid #111827;
+        background: transparent;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        color: #111827;
+        transition: all 0.15s;
+      }
+      .qty-btn:hover {
+        background: #111827;
+        color: #fff;
+      }
+      .section-label {
+        font-weight: 700;
+        font-size: 0.875rem;
+        color: #374151;
+        margin-bottom: 0.375rem;
+        display: block;
+      }
+      .payment-option {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.625rem 0.75rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: all 0.15s;
+        font-size: 0.875rem;
+        font-weight: 500;
+        flex: 1;
+      }
+      .payment-option:hover {
+        border-color: #111827;
+      }
+      .payment-option.selected {
+        border-color: #111827;
+        background: #111827;
+        color: #fff;
+      }
+      .order-type-option {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.625rem 0.75rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: all 0.15s;
+        font-size: 0.875rem;
+        font-weight: 500;
+        flex: 1;
+      }
+      .order-type-option:hover {
+        border-color: #111827;
+      }
+      .order-type-option.selected {
+        border-color: #16a34a;
+        background: #16a34a;
+        color: #fff;
+      }
+      .divider {
+        height: 1px;
+        background: #e5e7eb;
+        margin: 0.75rem 0;
+      }
+      .total-bar {
+        background: #f9fafb;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid #e5e7eb;
+        margin-bottom: 0.75rem;
+      }
+      input[type="text"], input[type="number"] {
+        width: 100%;
+        border: 2px solid #d1d5db;
+        border-radius: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+        outline: none;
+        transition: border-color 0.15s;
+      }
+      input[type="text"]:focus, input[type="number"]:focus {
+        border-color: #111827;
+      }
+      input.input-error {
+        border-color: #dc2626 !important;
+      }
+      .empty-cart {
+        text-align: center;
+        padding: 2rem 1rem;
+        color: #9ca3af;
+      }
+      .empty-cart i {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        display: block;
+      }
+    </style>
   </head>
   <body>
     <!-- HEADER -->
@@ -64,7 +227,6 @@
               Pão de Hamburguer, hambúrguer, queijo, presunto, tomate, batata
               palha, alface e milho
             </p>
-
             <div class="flex items-center gap-2 justify-between mt-3">
               <p><strong>R$ 12,00</strong></p>
               <button
@@ -77,7 +239,6 @@
             </div>
           </div>
         </div>
-        <!-- FIM PRODUTO ITEM -->
 
         <!-- PRODUTO ITEM 2 -->
         <div class="flex gap-2">
@@ -92,7 +253,6 @@
               Pão de Hamburguer, hambúrguer, queijo, presunto, tomate, batata
               palha, alface, milho e cebola
             </p>
-
             <div class="flex items-center gap-2 justify-between mt-3">
               <p><strong>R$ 14,00</strong></p>
               <button
@@ -105,7 +265,6 @@
             </div>
           </div>
         </div>
-        <!-- FIM PRODUTO ITEM -->
 
         <!-- PRODUTO ITEM 3 -->
         <div class="flex gap-2">
@@ -120,7 +279,6 @@
               Pão de Hamburguer, hambúrguer, queijo, presunto, bacon, tomate,
               batata palha, alface e milho
             </p>
-
             <div class="flex items-center gap-2 justify-between mt-3">
               <p><strong>R$ 14,00</strong></p>
               <button
@@ -133,7 +291,6 @@
             </div>
           </div>
         </div>
-        <!-- FIM PRODUTO ITEM -->
 
         <!-- PRODUTO ITEM 4 -->
         <div class="flex gap-2">
@@ -148,7 +305,6 @@
               Pão de Hamburguer, hambúrguer, queijo, presunto, ovo, catupiry,
               tomate, batata palha, alface e milho
             </p>
-
             <div class="flex items-center gap-2 justify-between mt-3">
               <p><strong>R$ 14,00</strong></p>
               <button
@@ -161,7 +317,6 @@
             </div>
           </div>
         </div>
-        <!-- FIM PRODUTO ITEM -->
 
         <!-- PRODUTO ITEM 5 -->
         <div class="flex gap-2">
@@ -176,7 +331,6 @@
               Pão de Hamburguer, hambúrguer, queijo, presunto, calabresa,
               tomate, batata palha, alface e milho
             </p>
-
             <div class="flex items-center gap-2 justify-between mt-3">
               <p><strong>R$ 14,00</strong></p>
               <button
@@ -189,7 +343,6 @@
             </div>
           </div>
         </div>
-        <!-- FIM PRODUTO ITEM -->
 
         <!-- PRODUTO ITEM 6 -->
         <div class="flex gap-2">
@@ -204,7 +357,6 @@
               Pão de Hamburguer, hambúrguer, queijo, presunto, ovo, bacon,
               salsicha, cheddar, tomate, batata palha, alface e milho
             </p>
-
             <div class="flex items-center gap-2 justify-between mt-3">
               <p><strong>R$ 17,00</strong></p>
               <button
@@ -217,7 +369,6 @@
             </div>
           </div>
         </div>
-        <!-- FIM PRODUTO ITEM -->
 
         <!-- PRODUTO ITEM 7 -->
         <div class="flex gap-2">
@@ -232,7 +383,6 @@
               Pão de Hamburguer, hambúrguer, queijo, presunto, ovo, calabresa,
               catupiry, tomate, batata palha, alface e milho
             </p>
-
             <div class="flex items-center gap-2 justify-between mt-3">
               <p><strong>R$ 17,00</strong></p>
               <button
@@ -245,7 +395,6 @@
             </div>
           </div>
         </div>
-        <!-- FIM PRODUTO ITEM -->
 
         <!-- PRODUTO ITEM 8 -->
         <div class="flex gap-2">
@@ -260,7 +409,6 @@
               Pão de Hamburguer, hambúrguer, salsicha, calabresa, bacon, queijo,
               presunto, bacon, tomate, batata palha, alface e milho
             </p>
-
             <div class="flex items-center gap-2 justify-between mt-3">
               <p><strong>R$ 17,00</strong></p>
               <button
@@ -273,7 +421,6 @@
             </div>
           </div>
         </div>
-        <!-- FIM PRODUTO ITEM -->
 
         <!-- PRODUTO ITEM 9 -->
         <div class="flex gap-2">
@@ -288,7 +435,6 @@
               Pão de Hamburguer, 2 hambúrguer, queijo, presunto, ovo, bacon,
               salsicha, cheddar, tomate, batata palha, alface e milho
             </p>
-
             <div class="flex items-center gap-2 justify-between mt-3">
               <p><strong>R$ 19,00</strong></p>
               <button
@@ -301,7 +447,6 @@
             </div>
           </div>
         </div>
-        <!-- FIM PRODUTO ITEM -->
       </main>
 
       <div class="mx-auto max-w-7xl px-2 my-2">
@@ -311,7 +456,7 @@
       <!-- GRID BEBIDAS -->
       <div
         class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10 mx-auto max-w-7xl px-2 mb-16"
-        id="menu"
+        id="menu-bebidas"
       >
         <div class="flex gap-2 w-full">
           <img
@@ -321,7 +466,6 @@
           />
           <div class="w-full">
             <p class="font-bold">Coca-Cola Lata</p>
-
             <div class="flex items-center gap-2 justify-between mt-3">
               <p><strong>R$ 6,00</strong></p>
               <button
@@ -343,7 +487,6 @@
           />
           <div class="w-full">
             <p class="font-bold">Guaraná Lata</p>
-
             <div class="flex items-center gap-2 justify-between mt-3">
               <p><strong>R$ 6,00</strong></p>
               <button
@@ -361,64 +504,123 @@
     </div>
     <!-- FIM MENU -->
 
-    <div
-      class="bg-black/60 w-full h-full fixed top-0 left-0 z-[99] items-center justify-center hidden"
-      id="cart-modal"
-    >
-      <div class="bg-white p-5 rounded-md min-w-[90%] md:min-w-[600px]">
-        <h2 class="text-center font-bold text-2xl mb-2">Meu Carrinho</h2>
+    <!-- MODAL CARRINHO -->
+    <div class="modal-overlay" id="cart-modal">
+      <div class="modal-box">
 
-        <div id="cart-items" class="flex justify-between mb-2 flex-col"></div>
-        <p class="font-bold">Total: <span id="cart-total">0.00</span></p>
-
-          <p class="font-bold mt-4">Tipo do pedido:</p>
-          <select id="order-type" class="w-full border-2 border-gray-300 rounded p-1 my-1">
-            <option value="delivery">Delivery</option>
-            <option value="retirada">Retirada no local</option>
-          </select>
-
-        <p class="font-bold mt-4" id="address">Endereço de entrega:</p>
-        <input
-          type="text"
-          id="address"
-          class="w-full border-2 border-gray-300 rounded p-1 my-1"
-          placeholder="Digite seu endereço"
-        />
-        <p class="text-red-600" hidden id="address-warn">
-          Digite seu endereço completo
-        </p>
-
-        <p class="font-bold mt-4">Forma de pagamento:</p>
-        <select id="payment-type" class="w-full border-2 border-gray-300 rounded p-1 my-1">
-          <option value="pix">Pix</option>
-          <option value="cartao">Cartão</option>
-          <option value="dinheiro">Dinheiro</option>
-        </select>
-
-        <div id="change-area" class="hidden">
-          <p class="font-bold mt-2">Troco para quanto?</p>
-          <input
-            type="number"
-            id="change-value"
-            class="w-full border-2 border-gray-300 rounded p-1 my-1"
-            placeholder="Ex: 50"
-          />
+        <!-- CABEÇALHO FIXO -->
+        <div class="modal-header">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <h2 class="font-bold text-lg" style="display:flex; align-items:center; gap:0.5rem;">
+              <i class="fa fa-shopping-cart"></i>
+              Meu Carrinho
+              <span id="cart-count-modal" style="background:#111827; color:#fff; border-radius:9999px; font-size:0.75rem; width:22px; height:22px; display:inline-flex; align-items:center; justify-content:center;"></span>
+            </h2>
+            <button id="close-modal-btn" style="background:none; border:none; cursor:pointer; font-size:1.25rem; color:#6b7280; padding:0.25rem;" title="Fechar">
+              <i class="fa fa-times"></i>
+            </button>
+          </div>
         </div>
 
-        <div class="flex items-center justify-between mt-5 w-full">
-          <button id="close-modal-btn">Fechar</button>
+        <!-- CORPO SCROLLÁVEL -->
+        <div class="modal-body">
+
+          <!-- ITENS DO CARRINHO -->
+          <div id="cart-items"></div>
+
+          <div class="divider"></div>
+
+          <!-- TIPO DO PEDIDO -->
+          <span class="section-label">
+            <i class="fa fa-motorcycle" style="margin-right:0.25rem;"></i>
+            Tipo do pedido
+          </span>
+          <div style="display:flex; gap:0.5rem; margin-bottom:0.75rem;">
+            <button class="order-type-option selected" id="btn-delivery" onclick="selectOrderType('delivery')">
+              <i class="fa fa-motorcycle"></i> Delivery
+            </button>
+            <button class="order-type-option" id="btn-retirada" onclick="selectOrderType('retirada')">
+              <i class="fa fa-store"></i> Retirada
+            </button>
+          </div>
+
+          <!-- ENDEREÇO (só para delivery) -->
+          <div id="address-section">
+            <span class="section-label">
+              <i class="fa fa-map-marker-alt" style="margin-right:0.25rem;"></i>
+              Endereço de entrega
+            </span>
+            <input
+              type="text"
+              id="address-input"
+              placeholder="Rua, número, bairro..."
+            />
+            <p style="color:#dc2626; font-size:0.75rem; margin-top:0.25rem; display:none;" id="address-warn">
+              <i class="fa fa-exclamation-circle"></i> Digite seu endereço completo
+            </p>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- FORMA DE PAGAMENTO -->
+          <span class="section-label">
+            <i class="fa fa-credit-card" style="margin-right:0.25rem;"></i>
+            Forma de pagamento
+          </span>
+          <div style="display:flex; gap:0.5rem; margin-bottom:0.75rem; flex-wrap:wrap;">
+            <button class="payment-option selected" id="btn-pix" onclick="selectPayment('pix')">
+              <i class="fa fa-qrcode"></i> Pix
+            </button>
+            <button class="payment-option" id="btn-cartao" onclick="selectPayment('cartao')">
+              <i class="fa fa-credit-card"></i> Cartão
+            </button>
+            <button class="payment-option" id="btn-dinheiro" onclick="selectPayment('dinheiro')">
+              <i class="fa fa-money-bill-wave"></i> Dinheiro
+            </button>
+          </div>
+
+          <!-- TROCO (só para dinheiro) -->
+          <div id="change-area" style="display:none;">
+            <span class="section-label">
+              <i class="fa fa-coins" style="margin-right:0.25rem;"></i>
+              Troco para quanto?
+            </span>
+            <input
+              type="number"
+              id="change-value"
+              placeholder="Ex: 50"
+              min="0"
+              step="0.01"
+            />
+            <p id="change-info" style="font-size:0.75rem; color:#16a34a; margin-top:0.25rem; display:none;"></p>
+          </div>
+
+        </div>
+
+        <!-- RODAPÉ FIXO COM TOTAL E BOTÃO -->
+        <div class="modal-footer">
+          <div class="total-bar">
+            <span class="font-bold">Total do pedido</span>
+            <span class="font-bold text-lg" id="cart-total">R$ 0,00</span>
+          </div>
           <button
             id="checkout-btn"
-            class="bg-green-500 text-white px-4 py-1 rounded"
+            class="bg-green-500 text-white font-bold rounded"
+            style="width:100%; padding:0.75rem; font-size:1rem; border:none; cursor:pointer; border-radius:0.5rem; transition: background 0.15s;"
+            onmouseover="this.style.background='#15803d'"
+            onmouseout="this.style.background='#22c55e'"
           >
-            Finalizar Pedido
+            <i class="fa fa-whatsapp"></i> Finalizar Pedido via WhatsApp
           </button>
         </div>
+
       </div>
     </div>
+    <!-- FIM MODAL CARRINHO -->
 
     <footer
-      class="w-full bg-red-900 py-2 text-white fixed z-40 bottom-0 flex items-center justify-center"
+      class="w-full bg-red-900 py-2 text-white fixed bottom-0 flex items-center justify-center"
+      style="z-index:40;"
     >
       <button class="flex items-center gap-2 font-semibold" id="cart-btn">
         (<span id="cart-count">0</span>) Ver Carrinho

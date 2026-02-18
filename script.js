@@ -7,201 +7,282 @@ const cartTotal = document.getElementById("cart-total");
 const checkoutBtn = document.getElementById("checkout-btn");
 const closeModalBtn = document.getElementById("close-modal-btn");
 const cartCounter = document.getElementById("cart-count");
-const addressInput = document.getElementById("address");
-const addresswarn = document.getElementById("address-warn");
-const orderType = document.getElementById("order-type");
-const paymentType = document.getElementById("payment-type");
+const cartCounterModal = document.getElementById("cart-count-modal");
+const addressInput = document.getElementById("address-input");
+const addressWarn = document.getElementById("address-warn");
+const addressSection = document.getElementById("address-section");
 const changeArea = document.getElementById("change-area");
 const changeValue = document.getElementById("change-value");
+const changeInfo = document.getElementById("change-info");
 
 let cart = [];
+let orderType = "delivery";   // "delivery" | "retirada"
+let paymentType = "pix";      // "pix" | "cartao" | "dinheiro"
 
-//Elementos de manipulação da modal
+// ─── MODAL ────────────────────────────────────────────────────────────────────
 cartBtn.addEventListener("click", () => {
   updateCartModal();
-  cartModal.style.display = "flex";
+  cartModal.classList.add("active");
 });
+
 closeModalBtn.addEventListener("click", () => {
-  cartModal.style.display = "none";
+  cartModal.classList.remove("active");
 });
+
 cartModal.addEventListener("click", (e) => {
   if (e.target === cartModal) {
-    cartModal.style.display = "none";
+    cartModal.classList.remove("active");
   }
 });
 
-// Manipulação de exibição do campo de endereço e campo de troco
-orderType.addEventListener("change", () => {
-  if (orderType.value === "retirada") {
-    addressInput.style.display = "none";
+// ─── TIPO DO PEDIDO ───────────────────────────────────────────────────────────
+function selectOrderType(type) {
+  orderType = type;
+
+  document.getElementById("btn-delivery").classList.toggle("selected", type === "delivery");
+  document.getElementById("btn-retirada").classList.toggle("selected", type === "retirada");
+
+  if (type === "retirada") {
+    addressSection.style.display = "none";
+    addressWarn.style.display = "none";
+    addressInput.classList.remove("input-error");
   } else {
-    addressInput.style.display = "block";
+    addressSection.style.display = "block";
   }
-});
+}
 
-paymentType.addEventListener("change", () => {
-  if (paymentType.value === "dinheiro") {
-    changeArea.classList.remove("hidden");
+// ─── PAGAMENTO ────────────────────────────────────────────────────────────────
+function selectPayment(type) {
+  paymentType = type;
+
+  document.getElementById("btn-pix").classList.toggle("selected", type === "pix");
+  document.getElementById("btn-cartao").classList.toggle("selected", type === "cartao");
+  document.getElementById("btn-dinheiro").classList.toggle("selected", type === "dinheiro");
+
+  if (type === "dinheiro") {
+    changeArea.style.display = "block";
   } else {
-    changeArea.classList.add("hidden");
+    changeArea.style.display = "none";
+    changeValue.value = "";
+    changeInfo.style.display = "none";
+  }
+}
+
+// Atualizar info do troco em tempo real
+changeValue.addEventListener("input", () => {
+  const val = parseFloat(changeValue.value);
+  const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+  if (val > 0 && val >= total) {
+    const troco = val - total;
+    changeInfo.textContent = `💵 Troco a devolver: R$ ${troco.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    changeInfo.style.display = "block";
+    changeInfo.style.color = "#16a34a";
+  } else if (val > 0 && val < total) {
+    changeInfo.textContent = "⚠️ Valor menor que o total do pedido";
+    changeInfo.style.display = "block";
+    changeInfo.style.color = "#dc2626";
+  } else {
+    changeInfo.style.display = "none";
   }
 });
 
-// Função para adicionar item ao carrinho
+// ─── CARRINHO ─────────────────────────────────────────────────────────────────
 menu.addEventListener("click", (e) => {
-  let parentButton = e.target.closest(".add-td-cart-btn");
+  const parentButton = e.target.closest(".add-td-cart-btn");
   if (parentButton) {
     const name = parentButton.getAttribute("data-name");
     const price = parseFloat(parentButton.getAttribute("data-price"));
-
     addToCart(name, price);
   }
 });
 
-//Função para adicionar item ao carrinho
 function addToCart(name, price) {
-  const existingItem = cart.find((item) => item.name === name);
-  if (existingItem) {
-    existingItem.quantity += 1;
+  const existing = cart.find((item) => item.name === name);
+  if (existing) {
+    existing.quantity += 1;
   } else {
     cart.push({ name, price, quantity: 1 });
   }
-  updateCartModal();
+  updateCartCounter();
 }
 
-// Função para atualizar o carrinho
+function updateCartCounter() {
+  const total = cart.reduce((acc, item) => acc + item.quantity, 0);
+  cartCounter.textContent = total;
+  if (cartCounterModal) cartCounterModal.textContent = total;
+}
+
 function updateCartModal() {
   cartItemsContainer.innerHTML = "";
-  let total = 0;
-  cart.forEach((item) => {
-    const cartItemElement = document.createElement("div");
-    cartItemElement.classList.add(
-      "flex",
-      "justify-between",
-      "mb-4",
-      "flex-col",
-    );
 
-    cartItemElement.innerHTML = `
-      <div class="flex justify-between items-center border-b py-2">
-        <div>
-          <p class="font-bold">${item.name}</p>
-          <p>Qtd: ${item.quantity}</p>
-          <p>R$ ${item.price.toFixed(2)}</p>
-        </div>
-        <button class="text-red-500 remove-item-btn" data-name="${item.name}">remover</button>
+  if (cart.length === 0) {
+    cartItemsContainer.innerHTML = `
+      <div class="empty-cart">
+        <i class="fa fa-shopping-cart"></i>
+        <p style="font-weight:600; color:#374151; margin-bottom:0.25rem;">Carrinho vazio</p>
+        <p style="font-size:0.8rem;">Adicione itens do menu para começar</p>
       </div>`;
+    cartTotal.textContent = "R$ 0,00";
+    updateCartCounter();
+    return;
+  }
 
-    total += item.price * item.quantity;
+  let total = 0;
 
-    cartItemsContainer.appendChild(cartItemElement);
+  cart.forEach((item) => {
+    const subtotal = item.price * item.quantity;
+    total += subtotal;
+
+    const el = document.createElement("div");
+    el.className = "cart-item-card";
+    el.innerHTML = `
+      <div style="flex:1;">
+        <p style="font-weight:700; font-size:0.875rem;">${item.name}</p>
+        <p style="font-size:0.75rem; color:#6b7280;">R$ ${item.price.toLocaleString("pt-BR", { minimumFractionDigits: 2 })} cada</p>
+      </div>
+      <div style="display:flex; align-items:center; gap:0.5rem;">
+        <button class="qty-btn" data-action="dec" data-name="${item.name}" title="Remover um">−</button>
+        <span style="font-weight:700; min-width:1.5rem; text-align:center;">${item.quantity}</span>
+        <button class="qty-btn" data-action="inc" data-name="${item.name}" title="Adicionar um">+</button>
+        <span style="font-weight:700; font-size:0.875rem; min-width:4rem; text-align:right;">R$ ${subtotal.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</span>
+      </div>`;
+    cartItemsContainer.appendChild(el);
   });
+
   cartTotal.textContent = total.toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
-  cartCounter.textContent = cart.reduce((acc, item) => acc + item.quantity, 0);
+
+  updateCartCounter();
+
+  // Atualiza info do troco se necessário
+  if (paymentType === "dinheiro" && changeValue.value) {
+    changeValue.dispatchEvent(new Event("input"));
+  }
 }
 
-// Função para remover item do carrinho
+// Botões de quantidade dentro do modal
 cartItemsContainer.addEventListener("click", (e) => {
-  if (e.target.classList.contains("remove-item-btn")) {
-    const name = e.target.getAttribute("data-name");
+  const btn = e.target.closest(".qty-btn");
+  if (!btn) return;
 
-    removeItemCart(name);
-  }
-});
+  const name = btn.getAttribute("data-name");
+  const action = btn.getAttribute("data-action");
+  const item = cart.find((i) => i.name === name);
 
-function removeItemCart(name) {
-  const itemIndex = cart.findIndex((item) => item.name === name);
-  if (itemIndex > -1) {
-    cart[itemIndex].quantity -= 1;
-    if (cart[itemIndex].quantity === 0) {
-      cart.splice(itemIndex, 1);
+  if (!item) return;
+
+  if (action === "inc") {
+    item.quantity += 1;
+  } else if (action === "dec") {
+    item.quantity -= 1;
+    if (item.quantity === 0) {
+      cart.splice(cart.indexOf(item), 1);
     }
-    updateCartModal();
   }
-}
 
-// Função Endereço
-addressInput.addEventListener("input", (e) => {
-  let inputValue = e.target.value;
-
-  if (inputValue.trim() !== "") {
-    addresswarn.setAttribute("hidden", "true");
-    addressInput.classList.remove("border-red-600");
-  } else {
-    addresswarn.removeAttribute("hidden");
-    addressInput.classList.add("border-red-600");
-  }
+  updateCartModal();
 });
 
-//finalizar compra
+// ─── FINALIZAR PEDIDO ─────────────────────────────────────────────────────────
 checkoutBtn.addEventListener("click", () => {
-  //   if (!checkRestaurantOpen()) {
-  //     alert(
-  //       "O restaurante está fechado no momento. Por favor, volte mais tarde.",
-  //     );
-  //     return;
-  //   }
-
-  if (cart.length === 0) return;
-  if (addressInput.value.trim() === "") {
-    addresswarn.removeAttribute("hidden");
-    addressInput.classList.add("border-red-600");
+  if (cart.length === 0) {
+    alert("Adicione itens ao carrinho antes de finalizar.");
     return;
   }
 
-  // Formatar itens do carrinho com estilo profissional
+  // Validação de endereço apenas para delivery
+  if (orderType === "delivery" && addressInput.value.trim() === "") {
+    addressWarn.style.display = "block";
+    addressInput.classList.add("input-error");
+    addressInput.scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+
+  // Validação de troco
+  if (paymentType === "dinheiro") {
+    const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const troco = parseFloat(changeValue.value);
+    if (!troco || troco < total) {
+      changeValue.classList.add("input-error");
+      changeValue.focus();
+      return;
+    }
+  }
+
+  // ── Montar mensagem WhatsApp ──────────────────────────────────────────────
+  const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
   const cartItems = cart
     .map((item) => {
-      const itemTotal = item.price * item.quantity;
-      return `▪️ *${item.name}*\n   Qtd: ${item.quantity} x R$ ${item.price.toFixed(2)} = R$ ${itemTotal.toFixed(2)}`;
+      const sub = item.price * item.quantity;
+      return `▪️ *${item.name}*\n   Qtd: ${item.quantity} x R$ ${item.price.toFixed(2)} = R$ ${sub.toFixed(2)}`;
     })
     .join("\n\n");
 
-  // Calcular total do pedido
-  const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+  const tipoLabel = orderType === "delivery" ? "🛵 Delivery" : "🏪 Retirada no local";
+  const enderecoLine =
+    orderType === "delivery"
+      ? `📍 *ENDEREÇO DE ENTREGA:*\n${addressInput.value}\n\n`
+      : `🏪 *RETIRADA NO LOCAL*\n\n`;
 
-  // Montar mensagem formatada e organizada
+  const paymentLabels = { pix: "💠 Pix", cartao: "💳 Cartão", dinheiro: "💵 Dinheiro" };
+  const paymentLine = `💳 *PAGAMENTO:* ${paymentLabels[paymentType]}`;
+
+  let trocoLine = "";
+  if (paymentType === "dinheiro") {
+    const trocoVal = parseFloat(changeValue.value) - total;
+    trocoLine = `\n💰 *TROCO PARA:* R$ ${parseFloat(changeValue.value).toFixed(2)}\n💵 *TROCO A DEVOLVER:* R$ ${trocoVal.toFixed(2)}`;
+  }
+
   const message = encodeURIComponent(
-    `🍔 *NOVO PEDIDO - HERO'S BURGER* 🍔\n\n` +
+    `🍔 *NOVO PEDIDO - ABACAXI BURGER* 🍔\n\n` +
     `━━━━━━━━━━━━━━━━━━━━\n\n` +
     `📋 *ITENS DO PEDIDO:*\n\n` +
     `${cartItems}\n\n` +
     `━━━━━━━━━━━━━━━━━━━━\n\n` +
     `💰 *VALOR TOTAL:* R$ ${total.toFixed(2)}\n\n` +
-    `📍 *ENDEREÇO DE ENTREGA:*\n${addressInput.value}\n\n` +
+    `🚀 *TIPO:* ${tipoLabel}\n\n` +
+    `${enderecoLine}` +
+    `${paymentLine}${trocoLine}\n\n` +
     `━━━━━━━━━━━━━━━━━━━━\n\n` +
-    `⏰ Pedido realizado em: ${new Date().toLocaleString('pt-BR')}`
+    `⏰ Pedido: ${new Date().toLocaleString("pt-BR")}`
   );
 
-  const phone = "63992863557";
+  window.open(`https://wa.me/63992863557?text=${message}`, "_blank");
 
-  window.open(
-    `https://wa.me/${phone}?text=${message}`,
-    "_blank",
-  );
-  
+  // Resetar
   cart.length = 0;
+  changeValue.value = "";
+  changeInfo.style.display = "none";
   updateCartModal();
+  cartModal.classList.remove("active");
 });
 
-//Validar horário de funcionamento
+// Validação de endereço em tempo real
+addressInput.addEventListener("input", () => {
+  if (addressInput.value.trim() !== "") {
+    addressWarn.style.display = "none";
+    addressInput.classList.remove("input-error");
+  } else {
+    addressWarn.style.display = "block";
+    addressInput.classList.add("input-error");
+  }
+});
+
+// ─── HORÁRIO ──────────────────────────────────────────────────────────────────
 function checkRestaurantOpen() {
-  const data = new Date();
-  const hora = data.getHours();
-  return hora >= 18 && hora < 23; //true se estiver aberto, false se estiver fechado
+  const hora = new Date().getHours();
+  return hora >= 18 && hora < 23;
 }
 
 const spanItem = document.getElementById("date-span");
-const isOpen = checkRestaurantOpen();
-
-if (isOpen) {
+if (checkRestaurantOpen()) {
   spanItem.classList.remove("bg-red-600");
   spanItem.classList.add("bg-green-600");
 } else {
   spanItem.classList.remove("bg-green-600");
   spanItem.classList.add("bg-red-600");
 }
-
