@@ -370,7 +370,14 @@
 
         <div id="cart-items" class="flex justify-between mb-2 flex-col"></div>
         <p class="font-bold">Total: <span id="cart-total">0.00</span></p>
-        <p class="font-bold mt-4">Endereço de entrega:</p>
+
+          <p class="font-bold mt-4">Tipo do pedido:</p>
+          <select id="order-type" class="w-full border-2 border-gray-300 rounded p-1 my-1">
+            <option value="delivery">Delivery</option>
+            <option value="retirada">Retirada no local</option>
+          </select>
+
+        <p class="font-bold mt-4" id="address">Endereço de entrega:</p>
         <input
           type="text"
           id="address"
@@ -380,12 +387,6 @@
         <p class="text-red-600" hidden id="address-warn">
           Digite seu endereço completo
         </p>
-
-          <p class="font-bold mt-4">Tipo do pedido:</p>
-          <select id="order-type" class="w-full border-2 border-gray-300 rounded p-1 my-1">
-            <option value="delivery">Delivery</option>
-            <option value="retirada">Retirada no local</option>
-          </select>
 
         <p class="font-bold mt-4">Forma de pagamento:</p>
         <select id="payment-type" class="w-full border-2 border-gray-300 rounded p-1 my-1">
