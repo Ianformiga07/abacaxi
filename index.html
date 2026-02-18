@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/output.css" />
+    <title>Abacaxi Burger - A melhor hamburgueria</title>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="w-full h-[420px] bg-home text-white">
+      <div class="w-full h-full flex flex-col items-center justify-center">
+        <img
+          src="assets/hamb-1.png"
+          alt="Logo da Hero's"
+          class="w-32 h-32 mx-auto rounded-full shadow-lg hover:scale-110 transition-transform duration-300"
+        />
+
+        <h1 class="text-3xl mt-4 mb-2 font-bold">Abacaxi Burger</h1>
+
+        <span class="text-white font-medium"
+          >Praça da Matriz - Centro - Ananás/TO</span
+        >
+
+        <div class="bg-green-600 px-4 py-1 rounded-lg mt-5" id="date-span">
+          <span>Ter à Dom - 18:00 as 23:00</span>
+        </div>
+      </div>
+    </header>
+    <!-- FIM HEADER -->
+
+    <h2 class="text-2xl md:text-3xl font-bold text-center mt-9 mb-6">
+      Conheça nosso menu
+    </h2>
+
+    <!-- INICIO MENU -->
+    <div id="menu">
+      <main
+        class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10 mx-auto max-w-7xl px-2 mb-16"
+      >
+        <!-- PRODUTO ITEM 1 -->
+        <div class="flex gap-2">
+          <img
+            src="./assets/hamb-2.png"
+            alt="Abacaxi Burger"
+            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+          />
+          <div>
+            <p class="font-bold">X-SALADA</p>
+            <p class="text-sm">
+              Pão de Hamburguer, hambúrguer, queijo, presunto, tomate, batata
+              palha, alface e milho
+            </p>
+
+            <div class="flex items-center gap-2 justify-between mt-3">
+              <p><strong>R$ 12,00</strong></p>
+              <button
+                class="bg-gray-900 px-5 rounded add-td-cart-btn"
+                data-name="X-SALADA"
+                data-price="12.00"
+              >
+                <i class="fa fa-cart-plus text-lg text-white"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- FIM PRODUTO ITEM -->
+
+        <!-- PRODUTO ITEM 2 -->
+        <div class="flex gap-2">
+          <img
+            src="./assets/hamb-3.png"
+            alt="Abacaxi Burger"
+            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+          />
+          <div>
+            <p class="font-bold">X-BURGUER</p>
+            <p class="text-sm">
+              Pão de Hamburguer, hambúrguer, queijo, presunto, tomate, batata
+              palha, alface, milho e cebola
+            </p>
+
+            <div class="flex items-center gap-2 justify-between mt-3">
+              <p><strong>R$ 14,00</strong></p>
+              <button
+                class="bg-gray-900 px-5 rounded add-td-cart-btn"
+                data-name="X-BURGUER"
+                data-price="14.00"
+              >
+                <i class="fa fa-cart-plus text-lg text-white"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- FIM PRODUTO ITEM -->
+
+        <!-- PRODUTO ITEM 3 -->
+        <div class="flex gap-2">
+          <img
+            src="./assets/hamb-4.png"
+            alt="Abacaxi Burger"
+            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+          />
+          <div>
+            <p class="font-bold">X-BACON</p>
+            <p class="text-sm">
+              Pão de Hamburguer, hambúrguer, queijo, presunto, bacon, tomate,
+              batata palha, alface e milho
+            </p>
+
+            <div class="flex items-center gap-2 justify-between mt-3">
+              <p><strong>R$ 14,00</strong></p>
+              <button
+                class="bg-gray-900 px-5 rounded add-td-cart-btn"
+                data-name="X-BACON"
+                data-price="14.00"
+              >
+                <i class="fa fa-cart-plus text-lg text-white"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- FIM PRODUTO ITEM -->
+
+        <!-- PRODUTO ITEM 4 -->
+        <div class="flex gap-2">
+          <img
+            src="./assets/hamb-5.png"
+            alt="Abacaxi Burger"
+            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+          />
+          <div>
+            <p class="font-bold">X-EGG SALADA/CHEDDAR</p>
+            <p class="text-sm">
+              Pão de Hamburguer, hambúrguer, queijo, presunto, ovo, catupiry,
+              tomate, batata palha, alface e milho
+            </p>
+
+            <div class="flex items-center gap-2 justify-between mt-3">
+              <p><strong>R$ 14,00</strong></p>
+              <button
+                class="bg-gray-900 px-5 rounded add-td-cart-btn"
+                data-name="X-EGG SALADA/CHEDDAR"
+                data-price="14.00"
+              >
+                <i class="fa fa-cart-plus text-lg text-white"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- FIM PRODUTO ITEM -->
+
+        <!-- PRODUTO ITEM 5 -->
+        <div class="flex gap-2">
+          <img
+            src="./assets/hamb-6.png"
+            alt="Abacaxi Burger"
+            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+          />
+          <div>
+            <p class="font-bold">X-CALABRESA</p>
+            <p class="text-sm">
+              Pão de Hamburguer, hambúrguer, queijo, presunto, calabresa,
+              tomate, batata palha, alface e milho
+            </p>
+
+            <div class="flex items-center gap-2 justify-between mt-3">
+              <p><strong>R$ 14,00</strong></p>
+              <button
+                class="bg-gray-900 px-5 rounded add-td-cart-btn"
+                data-name="X-CALABRESA"
+                data-price="14.00"
+              >
+                <i class="fa fa-cart-plus text-lg text-white"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- FIM PRODUTO ITEM -->
+
+        <!-- PRODUTO ITEM 6 -->
+        <div class="flex gap-2">
+          <img
+            src="./assets/hamb-7.png"
+            alt="Abacaxi Burger"
+            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+          />
+          <div>
+            <p class="font-bold">X-EGG BACON</p>
+            <p class="text-sm">
+              Pão de Hamburguer, hambúrguer, queijo, presunto, ovo, bacon,
+              salsicha, cheddar, tomate, batata palha, alface e milho
+            </p>
+
+            <div class="flex items-center gap-2 justify-between mt-3">
+              <p><strong>R$ 17,00</strong></p>
+              <button
+                class="bg-gray-900 px-5 rounded add-td-cart-btn"
+                data-name="X-EGG BACON"
+                data-price="17.00"
+              >
+                <i class="fa fa-cart-plus text-lg text-white"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- FIM PRODUTO ITEM -->
+
+        <!-- PRODUTO ITEM 7 -->
+        <div class="flex gap-2">
+          <img
+            src="./assets/hamb-8.png"
+            alt="Abacaxi Burger"
+            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+          />
+          <div>
+            <p class="font-bold">X-EGG CALABRESA</p>
+            <p class="text-sm">
+              Pão de Hamburguer, hambúrguer, queijo, presunto, ovo, calabresa,
+              catupiry, tomate, batata palha, alface e milho
+            </p>
+
+            <div class="flex items-center gap-2 justify-between mt-3">
+              <p><strong>R$ 17,00</strong></p>
+              <button
+                class="bg-gray-900 px-5 rounded add-td-cart-btn"
+                data-name="X-EGG CALABRESA"
+                data-price="17.00"
+              >
+                <i class="fa fa-cart-plus text-lg text-white"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- FIM PRODUTO ITEM -->
+
+        <!-- PRODUTO ITEM 8 -->
+        <div class="flex gap-2">
+          <img
+            src="./assets/hamb-1.png"
+            alt="Abacaxi Burger"
+            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+          />
+          <div>
+            <p class="font-bold">X-TUDO</p>
+            <p class="text-sm">
+              Pão de Hamburguer, hambúrguer, salsicha, calabresa, bacon, queijo,
+              presunto, bacon, tomate, batata palha, alface e milho
+            </p>
+
+            <div class="flex items-center gap-2 justify-between mt-3">
+              <p><strong>R$ 17,00</strong></p>
+              <button
+                class="bg-gray-900 px-5 rounded add-td-cart-btn"
+                data-name="X-TUDO"
+                data-price="17.00"
+              >
+                <i class="fa fa-cart-plus text-lg text-white"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- FIM PRODUTO ITEM -->
+
+        <!-- PRODUTO ITEM 9 -->
+        <div class="flex gap-2">
+          <img
+            src="./assets/hamb-1.png"
+            alt="Abacaxi Burger"
+            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+          />
+          <div>
+            <p class="font-bold">X-ABACAXI</p>
+            <p class="text-sm">
+              Pão de Hamburguer, 2 hambúrguer, queijo, presunto, ovo, bacon,
+              salsicha, cheddar, tomate, batata palha, alface e milho
+            </p>
+
+            <div class="flex items-center gap-2 justify-between mt-3">
+              <p><strong>R$ 19,00</strong></p>
+              <button
+                class="bg-gray-900 px-5 rounded add-td-cart-btn"
+                data-name="X-ABACAXI"
+                data-price="19.00"
+              >
+                <i class="fa fa-cart-plus text-lg text-white"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- FIM PRODUTO ITEM -->
+      </main>
+
+      <div class="mx-auto max-w-7xl px-2 my-2">
+        <h2 class="font-bold text-3xl">Bebidas</h2>
+      </div>
+
+      <!-- GRID BEBIDAS -->
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10 mx-auto max-w-7xl px-2 mb-16"
+        id="menu"
+      >
+        <div class="flex gap-2 w-full">
+          <img
+            src="./assets/refri-1.png"
+            alt="refri-1"
+            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+          />
+          <div class="w-full">
+            <p class="font-bold">Coca-Cola Lata</p>
+
+            <div class="flex items-center gap-2 justify-between mt-3">
+              <p><strong>R$ 6,00</strong></p>
+              <button
+                class="bg-gray-900 px-5 rounded add-td-cart-btn"
+                data-name="Coca-Cola Lata"
+                data-price="6.00"
+              >
+                <i class="fa fa-cart-plus text-lg text-white"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-2 w-full">
+          <img
+            src="./assets/refri-2.png"
+            alt="refri-2"
+            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+          />
+          <div class="w-full">
+            <p class="font-bold">Guaraná Lata</p>
+
+            <div class="flex items-center gap-2 justify-between mt-3">
+              <p><strong>R$ 6,00</strong></p>
+              <button
+                class="bg-gray-900 px-5 rounded add-td-cart-btn"
+                data-name="Guaraná Lata"
+                data-price="6.00"
+              >
+                <i class="fa fa-cart-plus text-lg text-white"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- FIM GRID BEBIDAS -->
+    </div>
+    <!-- FIM MENU -->
+
+    <div
+      class="bg-black/60 w-full h-full fixed top-0 left-0 z-[99] items-center justify-center hidden"
+      id="cart-modal"
+    >
+      <div class="bg-white p-5 rounded-md min-w-[90%] md:min-w-[600px]">
+        <h2 class="text-center font-bold text-2xl mb-2">Meu Carrinho</h2>
+
+        <div id="cart-items" class="flex justify-between mb-2 flex-col"></div>
+        <p class="font-bold">Total: <span id="cart-total">0.00</span></p>
+        <p class="font-bold mt-4">Endereço de entrega:</p>
+        <input
+          type="text"
+          id="address"
+          class="w-full border-2 border-gray-300 rounded p-1 my-1"
+          placeholder="Digite seu endereço"
+        />
+        <p class="text-red-600" hidden id="address-warn">
+          Digite seu endereço completo
+        </p>
+
+          <p class="font-bold mt-4">Tipo do pedido:</p>
+          <select id="order-type" class="w-full border-2 border-gray-300 rounded p-1 my-1">
+            <option value="delivery">Delivery</option>
+            <option value="retirada">Retirada no local</option>
+          </select>
+
+        <p class="font-bold mt-4">Forma de pagamento:</p>
+        <select id="payment-type" class="w-full border-2 border-gray-300 rounded p-1 my-1">
+          <option value="pix">Pix</option>
+          <option value="cartao">Cartão</option>
+          <option value="dinheiro">Dinheiro</option>
+        </select>
+
+        <div id="change-area" class="hidden">
+          <p class="font-bold mt-2">Troco para quanto?</p>
+          <input
+            type="number"
+            id="change-value"
+            class="w-full border-2 border-gray-300 rounded p-1 my-1"
+            placeholder="Ex: 50"
+          />
+        </div>
+
+        <div class="flex items-center justify-between mt-5 w-full">
+          <button id="close-modal-btn">Fechar</button>
+          <button
+            id="checkout-btn"
+            class="bg-green-500 text-white px-4 py-1 rounded"
+          >
+            Finalizar Pedido
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <footer
+      class="w-full bg-red-900 py-2 text-white fixed z-40 bottom-0 flex items-center justify-center"
+    >
+      <button class="flex items-center gap-2 font-semibold" id="cart-btn">
+        (<span id="cart-count">0</span>) Ver Carrinho
+        <i class="fa fa-shopping-cart"></i>
+      </button>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
