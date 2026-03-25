@@ -1,630 +1,1214 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-      integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles/output.css" />
-    <title>Abacaxi Burger - A melhor hamburgueria</title>
+    <title>Pizzaria RA - Pizza, Hambúrguer e mais</title>
     <style>
-      /* Classes extras necessárias para a modal */
+      :root {
+        --red: #c8102e;
+        --red-dark: #9b0d22;
+        --red-light: #f5c6cc;
+        --amber: #f59e0b;
+        --dark: #1a1a1a;
+        --surface: #fff;
+        --surface2: #fafafa;
+        --border: #e8e8e8;
+        --text: #1a1a1a;
+        --text-muted: #6b7280;
+        --green: #16a34a;
+        --green-dark: #15803d;
+      }
+
+      *, *::before, *::after { box-sizing: border-box; }
+
+      body {
+        font-family: 'Nunito', sans-serif;
+        background: #f5f5f0;
+        color: var(--text);
+        margin: 0;
+        padding: 0;
+      }
+
+      /* ─── HEADER ─── */
+      .site-header {
+        background: linear-gradient(160deg, #1a1a1a 0%, #2d0a10 50%, #c8102e 100%);
+        padding: 0;
+        position: relative;
+        overflow: hidden;
+      }
+      .site-header::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 70% 50%, rgba(200,16,46,0.35) 0%, transparent 60%),
+                    radial-gradient(circle at 10% 80%, rgba(245,158,11,0.2) 0%, transparent 40%);
+      }
+      .header-inner {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 1.5rem 2.5rem;
+        text-align: center;
+      }
+      .logo-circle {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 4px solid var(--amber);
+        overflow: hidden;
+        box-shadow: 0 0 0 6px rgba(245,158,11,0.2), 0 20px 40px rgba(0,0,0,0.5);
+        margin-bottom: 1.25rem;
+        transition: transform 0.3s ease;
+      }
+      .logo-circle:hover { transform: scale(1.07) rotate(-2deg); }
+      .logo-circle img { width: 100%; height: 100%; object-fit: cover; }
+      .header-title {
+        font-family: 'Oswald', sans-serif;
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: #fff;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        line-height: 1;
+        margin-bottom: 0.4rem;
+      }
+      .header-title span { color: var(--amber); }
+      .header-subtitle {
+        color: rgba(255,255,255,0.7);
+        font-size: 0.9rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        margin-bottom: 1.25rem;
+      }
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 1rem;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+      .status-badge.open { background: var(--green); color: #fff; }
+      .status-badge.closed { background: #dc2626; color: #fff; }
+      .status-dot {
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: 0.8;
+        animation: pulse 1.5s infinite;
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 0.8; transform: scale(1); }
+        50% { opacity: 0.4; transform: scale(1.3); }
+      }
+
+      /* ─── CATEGORY NAV ─── */
+      .cat-nav {
+        background: var(--surface);
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        border-bottom: 2px solid var(--border);
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      }
+      .cat-nav-inner {
+        display: flex;
+        gap: 0;
+        max-width: 900px;
+        margin: 0 auto;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+      .cat-nav-inner::-webkit-scrollbar { display: none; }
+      .cat-tab {
+        flex-shrink: 0;
+        padding: 0.9rem 1.25rem;
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-family: 'Nunito', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        border-bottom: 3px solid transparent;
+        transition: all 0.2s;
+        white-space: nowrap;
+      }
+      .cat-tab:hover { color: var(--red); }
+      .cat-tab.active { color: var(--red); border-bottom-color: var(--red); }
+
+      /* ─── MENU SECTIONS ─── */
+      .menu-section { padding: 2rem 1rem 1rem; max-width: 900px; margin: 0 auto; }
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+      }
+      .section-icon {
+        width: 44px; height: 44px;
+        border-radius: 12px;
+        background: var(--red);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        flex-shrink: 0;
+      }
+      .section-title {
+        font-family: 'Oswald', sans-serif;
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: var(--dark);
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        margin: 0;
+      }
+      .section-divider {
+        flex: 1;
+        height: 2px;
+        background: linear-gradient(to right, var(--red), transparent);
+        border: none;
+        margin: 0;
+      }
+
+      /* ─── PRODUCT CARD ─── */
+      .products-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      @media (min-width: 640px) {
+        .products-grid { grid-template-columns: repeat(2, 1fr); }
+      }
+
+      .product-card {
+        background: var(--surface);
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        display: flex;
+        gap: 0.9rem;
+        padding: 0.9rem;
+        transition: box-shadow 0.2s, transform 0.2s;
+        overflow: hidden;
+      }
+      .product-card:hover {
+        box-shadow: 0 8px 24px rgba(200,16,46,0.12);
+        transform: translateY(-2px);
+      }
+      .product-img {
+        width: 100px;
+        height: 100px;
+        border-radius: 12px;
+        object-fit: cover;
+        flex-shrink: 0;
+        transition: transform 0.3s;
+      }
+      .product-card:hover .product-img { transform: scale(1.05) rotate(-1deg); }
+      .product-body { flex: 1; display: flex; flex-direction: column; }
+      .product-name {
+        font-family: 'Oswald', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--dark);
+        letter-spacing: 0.3px;
+        margin-bottom: 0.3rem;
+        text-transform: uppercase;
+      }
+      .product-desc {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        line-height: 1.4;
+        flex: 1;
+        margin-bottom: 0.6rem;
+      }
+      .product-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: auto;
+      }
+      .product-price {
+        font-family: 'Oswald', sans-serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--red);
+      }
+      .add-cart-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: var(--dark);
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 1rem;
+        transition: background 0.15s, transform 0.1s;
+      }
+      .add-cart-btn:hover { background: var(--red); transform: scale(1.1); }
+      .add-cart-btn:active { transform: scale(0.95); }
+
+      /* ─── PIZZA BADGE ─── */
+      .badge-new {
+        display: inline-block;
+        background: var(--amber);
+        color: var(--dark);
+        font-size: 0.65rem;
+        font-weight: 800;
+        padding: 0.1rem 0.4rem;
+        border-radius: 4px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        margin-left: 0.4rem;
+        vertical-align: middle;
+      }
+
+      /* ─── FOOTER CART ─── */
+      .cart-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 40;
+        padding: 0.75rem 1rem;
+        background: linear-gradient(to right, var(--dark), #2d0a10);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .cart-footer-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: var(--red);
+        border: none;
+        cursor: pointer;
+        padding: 0.65rem 1.5rem;
+        border-radius: 999px;
+        color: #fff;
+        font-family: 'Nunito', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 800;
+        transition: background 0.2s, transform 0.15s;
+        box-shadow: 0 4px 16px rgba(200,16,46,0.4);
+      }
+      .cart-footer-btn:hover { background: var(--red-dark); transform: scale(1.03); }
+      .cart-badge {
+        background: #fff;
+        color: var(--red);
+        border-radius: 999px;
+        width: 22px;
+        height: 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        font-weight: 900;
+      }
+
+      /* ─── MODAL ─── */
       .modal-overlay {
         display: none;
         position: fixed;
         inset: 0;
-        background: rgba(0,0,0,0.6);
+        background: rgba(0,0,0,0.65);
         z-index: 99;
-        align-items: center;
+        align-items: flex-end;
         justify-content: center;
-        padding: 1rem;
+        padding: 0;
       }
-      .modal-overlay.active {
-        display: flex;
+      @media (min-width: 640px) {
+        .modal-overlay { align-items: center; padding: 1rem; }
       }
+      .modal-overlay.active { display: flex; }
       .modal-box {
-        background: #fff;
-        border-radius: 0.75rem;
+        background: var(--surface);
         width: 100%;
-        max-width: 580px;
-        max-height: 90vh;
+        max-width: 560px;
+        max-height: 92vh;
         display: flex;
         flex-direction: column;
         overflow: hidden;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 -8px 40px rgba(0,0,0,0.2);
       }
+      @media (min-width: 640px) {
+        .modal-box { border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+      }
+      .modal-handle {
+        width: 40px; height: 4px;
+        background: var(--border);
+        border-radius: 2px;
+        margin: 0.75rem auto 0;
+      }
+      @media (min-width: 640px) { .modal-handle { display: none; } }
       .modal-header {
-        padding: 1.25rem 1.5rem;
-        border-bottom: 2px solid #f3f4f6;
+        padding: 1rem 1.25rem 0.875rem;
+        border-bottom: 1px solid var(--border);
         flex-shrink: 0;
-        background: #fff;
       }
+      .modal-header-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .modal-title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: 'Oswald', sans-serif;
+        font-size: 1.25rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin: 0;
+      }
+      .modal-close {
+        background: var(--border);
+        border: none;
+        cursor: pointer;
+        width: 32px; height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        transition: background 0.15s;
+      }
+      .modal-close:hover { background: #e5e7eb; color: var(--dark); }
       .modal-body {
         flex: 1;
         overflow-y: auto;
-        padding: 1rem 1.5rem;
+        padding: 1rem 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
       }
       .modal-footer {
-        padding: 1rem 1.5rem;
-        border-top: 2px solid #f3f4f6;
+        padding: 0.875rem 1.25rem;
+        border-top: 1px solid var(--border);
         flex-shrink: 0;
-        background: #fff;
+        background: var(--surface2);
       }
+
+      /* ─── CART ITEMS ─── */
       .cart-item-card {
-        background: #f9fafb;
-        border-radius: 0.5rem;
+        background: var(--surface2);
+        border-radius: 12px;
         padding: 0.75rem;
-        margin-bottom: 0.5rem;
         display: flex;
         justify-content: space-between;
+        align-items: flex-start;
+        border: 1px solid var(--border);
+        gap: 0.75rem;
+      }
+      .cart-item-info { flex: 1; min-width: 0; }
+      .cart-item-name {
+        font-weight: 800;
+        font-size: 0.875rem;
+        color: var(--dark);
+        margin-bottom: 0.15rem;
+      }
+      .cart-item-unit {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
+      .cart-item-obs {
+        font-size: 0.72rem;
+        color: #6b7280;
+        margin-top: 0.2rem;
+        font-style: italic;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .cart-item-extras {
+        font-size: 0.72rem;
+        color: var(--green);
+        margin-top: 0.15rem;
+        font-weight: 600;
+      }
+      .cart-item-controls {
+        display: flex;
         align-items: center;
-        border: 1px solid #e5e7eb;
+        gap: 0.35rem;
+        flex-shrink: 0;
       }
       .qty-btn {
-        width: 28px;
-        height: 28px;
+        width: 28px; height: 28px;
         border-radius: 50%;
-        border: 2px solid #111827;
+        border: 2px solid var(--dark);
         background: transparent;
         font-size: 1rem;
-        font-weight: bold;
+        font-weight: 700;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
+        color: var(--dark);
+        transition: all 0.15s;
         line-height: 1;
-        color: #111827;
-        transition: all 0.15s;
       }
-      .qty-btn:hover {
-        background: #111827;
-        color: #fff;
+      .qty-btn:hover { background: var(--dark); color: #fff; }
+      .qty-num {
+        font-weight: 800;
+        min-width: 1.5rem;
+        text-align: center;
+        font-size: 0.9rem;
       }
-      .section-label {
+      .cart-item-price {
+        font-weight: 800;
+        font-size: 0.875rem;
+        color: var(--red);
+        min-width: 4rem;
+        text-align: right;
+        padding-top: 0.1rem;
+      }
+      .empty-cart {
+        text-align: center;
+        padding: 2.5rem 1rem;
+        color: var(--text-muted);
+      }
+      .empty-cart i { font-size: 2.5rem; margin-bottom: 0.5rem; display: block; opacity: 0.4; }
+
+      /* ─── SECTIONS IN MODAL ─── */
+      .form-section { display: flex; flex-direction: column; gap: 0.5rem; }
+      .form-label {
+        font-weight: 800;
+        font-size: 0.8rem;
+        color: var(--dark);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+      .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+      .option-btn {
+        flex: 1;
+        min-width: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        padding: 0.55rem 0.75rem;
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        cursor: pointer;
+        font-family: 'Nunito', sans-serif;
+        font-size: 0.8rem;
         font-weight: 700;
-        font-size: 0.875rem;
-        color: #374151;
-        margin-bottom: 0.375rem;
-        display: block;
-      }
-      .payment-option {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.625rem 0.75rem;
-        border: 2px solid #e5e7eb;
-        border-radius: 0.5rem;
-        cursor: pointer;
+        background: var(--surface);
+        color: var(--text-muted);
         transition: all 0.15s;
+        white-space: nowrap;
+      }
+      .option-btn:hover { border-color: var(--dark); color: var(--dark); }
+      .option-btn.selected-order { border-color: var(--green); background: var(--green); color: #fff; }
+      .option-btn.selected-pay { border-color: var(--dark); background: var(--dark); color: #fff; }
+
+      .form-input {
+        width: 100%;
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        padding: 0.6rem 0.875rem;
+        font-family: 'Nunito', sans-serif;
         font-size: 0.875rem;
-        font-weight: 500;
-        flex: 1;
+        font-weight: 600;
+        outline: none;
+        transition: border-color 0.15s;
+        background: var(--surface);
+        color: var(--dark);
       }
-      .payment-option:hover {
-        border-color: #111827;
-      }
-      .payment-option.selected {
-        border-color: #111827;
-        background: #111827;
-        color: #fff;
-      }
-      .order-type-option {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.625rem 0.75rem;
-        border: 2px solid #e5e7eb;
-        border-radius: 0.5rem;
-        cursor: pointer;
-        transition: all 0.15s;
+      .form-input:focus { border-color: var(--dark); }
+      .form-input.input-error { border-color: #dc2626 !important; }
+      .form-textarea {
+        resize: vertical;
+        min-height: 60px;
+        font-family: 'Nunito', sans-serif;
         font-size: 0.875rem;
-        font-weight: 500;
-        flex: 1;
+        font-weight: 600;
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        padding: 0.6rem 0.875rem;
+        width: 100%;
+        outline: none;
+        transition: border-color 0.15s;
+        color: var(--dark);
       }
-      .order-type-option:hover {
-        border-color: #111827;
+      .form-textarea:focus { border-color: var(--dark); }
+      .form-warn {
+        color: #dc2626;
+        font-size: 0.75rem;
+        margin-top: 0.2rem;
+        display: none;
       }
-      .order-type-option.selected {
-        border-color: #16a34a;
-        background: #16a34a;
-        color: #fff;
-      }
-      .divider {
-        height: 1px;
-        background: #e5e7eb;
-        margin: 0.75rem 0;
-      }
-      .total-bar {
-        background: #f9fafb;
-        border-radius: 0.5rem;
+      .form-info { font-size: 0.75rem; color: var(--green); margin-top: 0.2rem; display: none; }
+
+      /* ─── TOTAL BAR ─── */
+      .total-row {
+        background: var(--surface);
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
         padding: 0.75rem 1rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border: 1px solid #e5e7eb;
         margin-bottom: 0.75rem;
       }
-      input[type="text"], input[type="number"] {
+      .total-label { font-weight: 700; font-size: 0.9rem; color: var(--dark); }
+      .total-value { font-family: 'Oswald', sans-serif; font-size: 1.3rem; font-weight: 700; color: var(--red); }
+      .checkout-btn {
         width: 100%;
-        border: 2px solid #d1d5db;
-        border-radius: 0.5rem;
+        padding: 0.85rem;
+        background: var(--green);
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-family: 'Nunito', sans-serif;
+        font-size: 1rem;
+        font-weight: 800;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: background 0.15s, transform 0.1s;
+      }
+      .checkout-btn:hover { background: var(--green-dark); }
+      .checkout-btn:active { transform: scale(0.98); }
+
+      /* ─── ADICIONAIS MODAL ─── */
+      .extras-modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.65);
+        z-index: 110;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+      .extras-modal-overlay.active { display: flex; }
+      .extras-modal-box {
+        background: var(--surface);
+        width: 100%;
+        max-width: 480px;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        overflow: hidden;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .extras-header {
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-shrink: 0;
+      }
+      .extras-header h3 {
+        font-family: 'Oswald', sans-serif;
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin: 0;
+        letter-spacing: 0.5px;
+      }
+      .extras-body {
+        padding: 1.25rem 1.5rem;
+        overflow-y: auto;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .extras-product-name {
+        font-weight: 800;
+        color: var(--red);
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        margin-bottom: 0.25rem;
+      }
+      .extras-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+      }
+      .extra-chip {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
         padding: 0.5rem 0.75rem;
-        font-size: 0.875rem;
-        outline: none;
-        transition: border-color 0.15s;
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 0.82rem;
+        font-weight: 700;
+        transition: all 0.15s;
+        background: var(--surface);
+        color: var(--text-muted);
+        user-select: none;
       }
-      input[type="text"]:focus, input[type="number"]:focus {
-        border-color: #111827;
+      .extra-chip:hover { border-color: var(--amber); color: var(--dark); }
+      .extra-chip.selected { border-color: var(--amber); background: #fffbeb; color: var(--dark); }
+      .extra-chip-check {
+        width: 16px; height: 16px;
+        border-radius: 4px;
+        border: 2px solid var(--border);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.6rem;
+        transition: all 0.15s;
       }
-      input.input-error {
-        border-color: #dc2626 !important;
+      .extra-chip.selected .extra-chip-check {
+        background: var(--amber);
+        border-color: var(--amber);
+        color: var(--dark);
       }
-      .empty-cart {
-        text-align: center;
-        padding: 2rem 1rem;
-        color: #9ca3af;
+      .extras-obs-label {
+        font-size: 0.8rem;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 0.3rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
       }
-      .empty-cart i {
-        font-size: 2.5rem;
-        margin-bottom: 0.5rem;
-        display: block;
+      .extras-footer {
+        padding: 1rem 1.5rem;
+        border-top: 1px solid var(--border);
+        display: flex;
+        gap: 0.75rem;
+        flex-shrink: 0;
       }
+      .btn-cancel {
+        flex: 1;
+        padding: 0.7rem;
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        background: none;
+        font-family: 'Nunito', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        cursor: pointer;
+        color: var(--text-muted);
+        transition: all 0.15s;
+      }
+      .btn-cancel:hover { border-color: var(--dark); color: var(--dark); }
+      .btn-confirm {
+        flex: 2;
+        padding: 0.7rem;
+        border: none;
+        border-radius: 10px;
+        background: var(--red);
+        font-family: 'Nunito', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 800;
+        cursor: pointer;
+        color: #fff;
+        transition: background 0.15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+      }
+      .btn-confirm:hover { background: var(--red-dark); }
+
+      /* ─── PAGE BOTTOM SPACING ─── */
+      #page-bottom { height: 80px; }
     </style>
   </head>
   <body>
-    <!-- HEADER -->
-    <header class="w-full h-[420px] bg-home text-white">
-      <div class="w-full h-full flex flex-col items-center justify-center">
-        <img
-          src="assets/hamb-1.png"
-          alt="Logo da Hero's"
-          class="w-32 h-32 mx-auto rounded-full shadow-lg hover:scale-110 transition-transform duration-300"
-        />
 
-        <h1 class="text-3xl mt-4 mb-2 font-bold">Abacaxi Burger</h1>
-
-        <span class="text-white font-medium"
-          >Praça da Matriz - Centro - Ananás/TO</span
-        >
-
-        <div class="bg-green-600 px-4 py-1 rounded-lg mt-5" id="date-span">
-          <span>Ter à Dom - 18:00 as 23:00</span>
+    <!-- ═══ HEADER ═══ -->
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="logo-circle">
+          <img src="assets/hamb-1.png" alt="Pizzaria RA" />
+        </div>
+        <h1 class="header-title">Pizzaria <span>RA</span></h1>
+        <p class="header-subtitle">
+          <i class="fa fa-map-marker-alt"></i>
+          Praça da Matriz - Centro - Ananás/TO
+        </p>
+        <div class="status-badge" id="date-span">
+          <span class="status-dot"></span>
+          <span>Ter à Dom — 18:00 às 23:00</span>
         </div>
       </div>
     </header>
-    <!-- FIM HEADER -->
 
-    <h2 class="text-2xl md:text-3xl font-bold text-center mt-9 mb-6">
-      Conheça nosso menu
-    </h2>
+    <!-- ═══ CATEGORY NAV ═══ -->
+    <nav class="cat-nav">
+      <div class="cat-nav-inner">
+        <button class="cat-tab active" onclick="scrollToSection('section-pizzas')">
+          <i class="fa fa-fire"></i> Pizzas
+        </button>
+        <button class="cat-tab" onclick="scrollToSection('section-lanches')">
+          <i class="fa fa-hamburger"></i> Lanches
+        </button>
+        <button class="cat-tab" onclick="scrollToSection('section-bebidas')">
+          <i class="fa fa-glass-cheers"></i> Bebidas
+        </button>
+      </div>
+    </nav>
 
-    <!-- INICIO MENU -->
+    <!-- ═══ MENU ═══ -->
     <div id="menu">
-      <main
-        class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10 mx-auto max-w-7xl px-2 mb-16"
-      >
-        <!-- PRODUTO ITEM 1 -->
-        <div class="flex gap-2">
-          <img
-            src="./assets/hamb-2.png"
-            alt="Abacaxi Burger"
-            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
-          />
-          <div>
-            <p class="font-bold">X-SALADA</p>
-            <p class="text-sm">
-              Pão de Hamburguer, hambúrguer, queijo, presunto, tomate, batata
-              palha, alface e milho
-            </p>
-            <div class="flex items-center gap-2 justify-between mt-3">
-              <p><strong>R$ 12,00</strong></p>
-              <button
-                class="bg-gray-900 px-5 rounded add-td-cart-btn"
-                data-name="X-SALADA"
-                data-price="12.00"
-              >
-                <i class="fa fa-cart-plus text-lg text-white"></i>
-              </button>
-            </div>
-          </div>
+
+      <!-- ─── PIZZAS ─── -->
+      <section class="menu-section" id="section-pizzas">
+        <div class="section-header">
+          <div class="section-icon"><i class="fa fa-fire"></i></div>
+          <h2 class="section-title">Pizzas</h2>
+          <hr class="section-divider" />
         </div>
 
-        <!-- PRODUTO ITEM 2 -->
-        <div class="flex gap-2">
-          <img
-            src="./assets/hamb-3.png"
-            alt="Abacaxi Burger"
-            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
-          />
-          <div>
-            <p class="font-bold">X-BURGUER</p>
-            <p class="text-sm">
-              Pão de Hamburguer, hambúrguer, queijo, presunto, tomate, batata
-              palha, alface, milho e cebola
-            </p>
-            <div class="flex items-center gap-2 justify-between mt-3">
-              <p><strong>R$ 14,00</strong></p>
-              <button
-                class="bg-gray-900 px-5 rounded add-td-cart-btn"
-                data-name="X-BURGUER"
-                data-price="14.00"
-              >
-                <i class="fa fa-cart-plus text-lg text-white"></i>
-              </button>
+        <div class="products-grid">
+
+          <div class="product-card">
+            <img src="assets/hamb-1.png" alt="Pizza Margherita" class="product-img" />
+            <div class="product-body">
+              <p class="product-name">Margherita <span class="badge-new">Popular</span></p>
+              <p class="product-desc">Molho de tomate, mozzarella, manjericão fresco e azeite</p>
+              <div class="product-footer">
+                <span class="product-price">R$ 35,00</span>
+                <button class="add-cart-btn add-td-cart-btn" data-name="Pizza Margherita" data-price="35.00" data-has-extras="true" title="Adicionar">
+                  <i class="fa fa-cart-plus"></i>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- PRODUTO ITEM 3 -->
-        <div class="flex gap-2">
-          <img
-            src="./assets/hamb-4.png"
-            alt="Abacaxi Burger"
-            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
-          />
-          <div>
-            <p class="font-bold">X-BACON</p>
-            <p class="text-sm">
-              Pão de Hamburguer, hambúrguer, queijo, presunto, bacon, tomate,
-              batata palha, alface e milho
-            </p>
-            <div class="flex items-center gap-2 justify-between mt-3">
-              <p><strong>R$ 14,00</strong></p>
-              <button
-                class="bg-gray-900 px-5 rounded add-td-cart-btn"
-                data-name="X-BACON"
-                data-price="14.00"
-              >
-                <i class="fa fa-cart-plus text-lg text-white"></i>
-              </button>
+          <div class="product-card">
+            <img src="assets/hamb-2.png" alt="Pizza Calabresa" class="product-img" />
+            <div class="product-body">
+              <p class="product-name">Calabresa</p>
+              <p class="product-desc">Molho de tomate, mozzarella, calabresa fatiada, cebola e orégano</p>
+              <div class="product-footer">
+                <span class="product-price">R$ 38,00</span>
+                <button class="add-cart-btn add-td-cart-btn" data-name="Pizza Calabresa" data-price="38.00" data-has-extras="true" title="Adicionar">
+                  <i class="fa fa-cart-plus"></i>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- PRODUTO ITEM 4 -->
-        <div class="flex gap-2">
-          <img
-            src="./assets/hamb-5.png"
-            alt="Abacaxi Burger"
-            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
-          />
-          <div>
-            <p class="font-bold">X-EGG SALADA/CHEDDAR</p>
-            <p class="text-sm">
-              Pão de Hamburguer, hambúrguer, queijo, presunto, ovo, catupiry,
-              tomate, batata palha, alface e milho
-            </p>
-            <div class="flex items-center gap-2 justify-between mt-3">
-              <p><strong>R$ 14,00</strong></p>
-              <button
-                class="bg-gray-900 px-5 rounded add-td-cart-btn"
-                data-name="X-EGG SALADA/CHEDDAR"
-                data-price="14.00"
-              >
-                <i class="fa fa-cart-plus text-lg text-white"></i>
-              </button>
+          <div class="product-card">
+            <img src="assets/hamb-3.png" alt="Pizza Frango com Catupiry" class="product-img" />
+            <div class="product-body">
+              <p class="product-name">Frango c/ Catupiry</p>
+              <p class="product-desc">Molho de tomate, mozzarella, frango desfiado e catupiry cremoso</p>
+              <div class="product-footer">
+                <span class="product-price">R$ 40,00</span>
+                <button class="add-cart-btn add-td-cart-btn" data-name="Pizza Frango c/ Catupiry" data-price="40.00" data-has-extras="true" title="Adicionar">
+                  <i class="fa fa-cart-plus"></i>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- PRODUTO ITEM 5 -->
-        <div class="flex gap-2">
-          <img
-            src="./assets/hamb-6.png"
-            alt="Abacaxi Burger"
-            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
-          />
-          <div>
-            <p class="font-bold">X-CALABRESA</p>
-            <p class="text-sm">
-              Pão de Hamburguer, hambúrguer, queijo, presunto, calabresa,
-              tomate, batata palha, alface e milho
-            </p>
-            <div class="flex items-center gap-2 justify-between mt-3">
-              <p><strong>R$ 14,00</strong></p>
-              <button
-                class="bg-gray-900 px-5 rounded add-td-cart-btn"
-                data-name="X-CALABRESA"
-                data-price="14.00"
-              >
-                <i class="fa fa-cart-plus text-lg text-white"></i>
-              </button>
+          <div class="product-card">
+            <img src="assets/hamb-4.png" alt="Pizza Portuguesa" class="product-img" />
+            <div class="product-body">
+              <p class="product-name">Portuguesa</p>
+              <p class="product-desc">Molho de tomate, mozzarella, presunto, ovos, cebola, azeitona e pimentão</p>
+              <div class="product-footer">
+                <span class="product-price">R$ 42,00</span>
+                <button class="add-cart-btn add-td-cart-btn" data-name="Pizza Portuguesa" data-price="42.00" data-has-extras="true" title="Adicionar">
+                  <i class="fa fa-cart-plus"></i>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- PRODUTO ITEM 6 -->
-        <div class="flex gap-2">
-          <img
-            src="./assets/hamb-7.png"
-            alt="Abacaxi Burger"
-            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
-          />
-          <div>
-            <p class="font-bold">X-EGG BACON</p>
-            <p class="text-sm">
-              Pão de Hamburguer, hambúrguer, queijo, presunto, ovo, bacon,
-              salsicha, cheddar, tomate, batata palha, alface e milho
-            </p>
-            <div class="flex items-center gap-2 justify-between mt-3">
-              <p><strong>R$ 17,00</strong></p>
-              <button
-                class="bg-gray-900 px-5 rounded add-td-cart-btn"
-                data-name="X-EGG BACON"
-                data-price="17.00"
-              >
-                <i class="fa fa-cart-plus text-lg text-white"></i>
-              </button>
+          <div class="product-card">
+            <img src="assets/hamb-5.png" alt="Pizza Quatro Queijos" class="product-img" />
+            <div class="product-body">
+              <p class="product-name">Quatro Queijos</p>
+              <p class="product-desc">Molho de tomate, mozzarella, gorgonzola, parmesão e provolone</p>
+              <div class="product-footer">
+                <span class="product-price">R$ 44,00</span>
+                <button class="add-cart-btn add-td-cart-btn" data-name="Pizza Quatro Queijos" data-price="44.00" data-has-extras="true" title="Adicionar">
+                  <i class="fa fa-cart-plus"></i>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- PRODUTO ITEM 7 -->
-        <div class="flex gap-2">
-          <img
-            src="./assets/hamb-8.png"
-            alt="Abacaxi Burger"
-            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
-          />
-          <div>
-            <p class="font-bold">X-EGG CALABRESA</p>
-            <p class="text-sm">
-              Pão de Hamburguer, hambúrguer, queijo, presunto, ovo, calabresa,
-              catupiry, tomate, batata palha, alface e milho
-            </p>
-            <div class="flex items-center gap-2 justify-between mt-3">
-              <p><strong>R$ 17,00</strong></p>
-              <button
-                class="bg-gray-900 px-5 rounded add-td-cart-btn"
-                data-name="X-EGG CALABRESA"
-                data-price="17.00"
-              >
-                <i class="fa fa-cart-plus text-lg text-white"></i>
-              </button>
+          <div class="product-card">
+            <img src="assets/hamb-6.png" alt="Pizza Pepperoni" class="product-img" />
+            <div class="product-body">
+              <p class="product-name">Pepperoni <span class="badge-new">Top</span></p>
+              <p class="product-desc">Molho de tomate, mozzarella e generosa quantidade de pepperoni</p>
+              <div class="product-footer">
+                <span class="product-price">R$ 46,00</span>
+                <button class="add-cart-btn add-td-cart-btn" data-name="Pizza Pepperoni" data-price="46.00" data-has-extras="true" title="Adicionar">
+                  <i class="fa fa-cart-plus"></i>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- PRODUTO ITEM 8 -->
-        <div class="flex gap-2">
-          <img
-            src="./assets/hamb-1.png"
-            alt="Abacaxi Burger"
-            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
-          />
-          <div>
-            <p class="font-bold">X-TUDO</p>
-            <p class="text-sm">
-              Pão de Hamburguer, hambúrguer, salsicha, calabresa, bacon, queijo,
-              presunto, bacon, tomate, batata palha, alface e milho
-            </p>
-            <div class="flex items-center gap-2 justify-between mt-3">
-              <p><strong>R$ 17,00</strong></p>
-              <button
-                class="bg-gray-900 px-5 rounded add-td-cart-btn"
-                data-name="X-TUDO"
-                data-price="17.00"
-              >
-                <i class="fa fa-cart-plus text-lg text-white"></i>
-              </button>
+          <div class="product-card">
+            <img src="assets/hamb-7.png" alt="Pizza Bacon com Cheddar" class="product-img" />
+            <div class="product-body">
+              <p class="product-name">Bacon c/ Cheddar</p>
+              <p class="product-desc">Molho de tomate, mozzarella, bacon crocante e cheddar derretido</p>
+              <div class="product-footer">
+                <span class="product-price">R$ 45,00</span>
+                <button class="add-cart-btn add-td-cart-btn" data-name="Pizza Bacon c/ Cheddar" data-price="45.00" data-has-extras="true" title="Adicionar">
+                  <i class="fa fa-cart-plus"></i>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- PRODUTO ITEM 9 -->
-        <div class="flex gap-2">
-          <img
-            src="./assets/hamb-1.png"
-            alt="Abacaxi Burger"
-            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
-          />
-          <div>
-            <p class="font-bold">X-ABACAXI</p>
-            <p class="text-sm">
-              Pão de Hamburguer, 2 hambúrguer, queijo, presunto, ovo, bacon,
-              salsicha, cheddar, tomate, batata palha, alface e milho
-            </p>
-            <div class="flex items-center gap-2 justify-between mt-3">
-              <p><strong>R$ 19,00</strong></p>
-              <button
-                class="bg-gray-900 px-5 rounded add-td-cart-btn"
-                data-name="X-ABACAXI"
-                data-price="19.00"
-              >
-                <i class="fa fa-cart-plus text-lg text-white"></i>
-              </button>
+          <div class="product-card">
+            <img src="assets/hamb-8.png" alt="Pizza Chocolate" class="product-img" />
+            <div class="product-body">
+              <p class="product-name">Chocolate 🍫 <span class="badge-new">Doce</span></p>
+              <p class="product-desc">Chocolate ao leite, morangos frescos e granulado — nossa sobremesa</p>
+              <div class="product-footer">
+                <span class="product-price">R$ 38,00</span>
+                <button class="add-cart-btn add-td-cart-btn" data-name="Pizza Chocolate" data-price="38.00" data-has-extras="false" title="Adicionar">
+                  <i class="fa fa-cart-plus"></i>
+                </button>
+              </div>
             </div>
           </div>
+
         </div>
-      </main>
+      </section>
 
-      <div class="mx-auto max-w-7xl px-2 my-2">
-        <h2 class="font-bold text-3xl">Bebidas</h2>
-      </div>
+      <!-- ─── LANCHES ─── -->
+      <section class="menu-section" id="section-lanches">
+        <div class="section-header">
+          <div class="section-icon"><i class="fa fa-hamburger"></i></div>
+          <h2 class="section-title">Lanches</h2>
+          <hr class="section-divider" />
+        </div>
 
-      <!-- GRID BEBIDAS -->
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10 mx-auto max-w-7xl px-2 mb-16"
-        id="menu-bebidas"
-      >
-        <div class="flex gap-2 w-full">
-          <img
-            src="./assets/refri-1.png"
-            alt="refri-1"
-            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
-          />
-          <div class="w-full">
-            <p class="font-bold">Coca-Cola Lata</p>
-            <div class="flex items-center gap-2 justify-between mt-3">
-              <p><strong>R$ 6,00</strong></p>
-              <button
-                class="bg-gray-900 px-5 rounded add-td-cart-btn"
-                data-name="Coca-Cola Lata"
-                data-price="6.00"
-              >
-                <i class="fa fa-cart-plus text-lg text-white"></i>
-              </button>
+        <div class="products-grid">
+
+          <div class="product-card">
+            <img src="assets/hamb-2.png" alt="X-Salada" class="product-img" />
+            <div class="product-body">
+              <p class="product-name">X-SALADA</p>
+              <p class="product-desc">Pão, hambúrguer, queijo, presunto, tomate, batata palha, alface e milho</p>
+              <div class="product-footer">
+                <span class="product-price">R$ 12,00</span>
+                <button class="add-cart-btn add-td-cart-btn" data-name="X-SALADA" data-price="12.00" data-has-extras="true" title="Adicionar">
+                  <i class="fa fa-cart-plus"></i>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="flex gap-2 w-full">
-          <img
-            src="./assets/refri-2.png"
-            alt="refri-2"
-            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
-          />
-          <div class="w-full">
-            <p class="font-bold">Guaraná Lata</p>
-            <div class="flex items-center gap-2 justify-between mt-3">
-              <p><strong>R$ 6,00</strong></p>
-              <button
-                class="bg-gray-900 px-5 rounded add-td-cart-btn"
-                data-name="Guaraná Lata"
-                data-price="6.00"
-              >
-                <i class="fa fa-cart-plus text-lg text-white"></i>
-              </button>
+          <div class="product-card">
+            <img src="assets/hamb-3.png" alt="X-Burguer" class="product-img" />
+            <div class="product-body">
+              <p class="product-name">X-BURGUER</p>
+              <p class="product-desc">Pão, hambúrguer, queijo, presunto, tomate, batata palha, alface, milho e cebola</p>
+              <div class="product-footer">
+                <span class="product-price">R$ 14,00</span>
+                <button class="add-cart-btn add-td-cart-btn" data-name="X-BURGUER" data-price="14.00" data-has-extras="true" title="Adicionar">
+                  <i class="fa fa-cart-plus"></i>
+                </button>
+              </div>
             </div>
           </div>
+
+          <div class="product-card">
+            <img src="assets/hamb-4.png" alt="X-Bacon" class="product-img" />
+            <div class="product-body">
+              <p class="product-name">X-BACON</p>
+              <p class="product-desc">Pão, hambúrguer, queijo, presunto, bacon, tomate, batata palha, alface e milho</p>
+              <div class="product-footer">
+                <span class="product-price">R$ 14,00</span>
+                <button class="add-cart-btn add-td-cart-btn" data-name="X-BACON" data-price="14.00" data-has-extras="true" title="Adicionar">
+                  <i class="fa fa-cart-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <img src="assets/hamb-5.png" alt="X-Egg Salada/Cheddar" class="product-img" />
+            <div class="product-body">
+              <p class="product-name">X-EGG SALADA/CHEDDAR</p>
+              <p class="product-desc">Pão, hambúrguer, queijo, presunto, ovo, catupiry, tomate, batata palha, alface e milho</p>
+              <div class="product-footer">
+                <span class="product-price">R$ 14,00</span>
+                <button class="add-cart-btn add-td-cart-btn" data-name="X-EGG SALADA/CHEDDAR" data-price="14.00" data-has-extras="true" title="Adicionar">
+                  <i class="fa fa-cart-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <img src="assets/hamb-6.png" alt="X-Calabresa" class="product-img" />
+            <div class="product-body">
+              <p class="product-name">X-CALABRESA</p>
+              <p class="product-desc">Pão, hambúrguer, queijo, presunto, calabresa, tomate, batata palha, alface e milho</p>
+              <div class="product-footer">
+                <span class="product-price">R$ 14,00</span>
+                <button class="add-cart-btn add-td-cart-btn" data-name="X-CALABRESA" data-price="14.00" data-has-extras="true" title="Adicionar">
+                  <i class="fa fa-cart-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <img src="assets/hamb-7.png" alt="X-Egg Bacon" class="product-img" />
+            <div class="product-body">
+              <p class="product-name">X-EGG BACON</p>
+              <p class="product-desc">Pão, hambúrguer, queijo, presunto, ovo, bacon, salsicha, cheddar, tomate, batata palha, alface e milho</p>
+              <div class="product-footer">
+                <span class="product-price">R$ 17,00</span>
+                <button class="add-cart-btn add-td-cart-btn" data-name="X-EGG BACON" data-price="17.00" data-has-extras="true" title="Adicionar">
+                  <i class="fa fa-cart-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <img src="assets/hamb-8.png" alt="X-Egg Calabresa" class="product-img" />
+            <div class="product-body">
+              <p class="product-name">X-EGG CALABRESA</p>
+              <p class="product-desc">Pão, hambúrguer, queijo, presunto, ovo, calabresa, catupiry, tomate, batata palha, alface e milho</p>
+              <div class="product-footer">
+                <span class="product-price">R$ 17,00</span>
+                <button class="add-cart-btn add-td-cart-btn" data-name="X-EGG CALABRESA" data-price="17.00" data-has-extras="true" title="Adicionar">
+                  <i class="fa fa-cart-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <img src="assets/hamb-1.png" alt="X-Tudo" class="product-img" />
+            <div class="product-body">
+              <p class="product-name">X-TUDO</p>
+              <p class="product-desc">Pão, hambúrguer, salsicha, calabresa, bacon, queijo, presunto, tomate, batata palha, alface e milho</p>
+              <div class="product-footer">
+                <span class="product-price">R$ 17,00</span>
+                <button class="add-cart-btn add-td-cart-btn" data-name="X-TUDO" data-price="17.00" data-has-extras="true" title="Adicionar">
+                  <i class="fa fa-cart-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <img src="assets/hamb-1.png" alt="X-Abacaxi" class="product-img" />
+            <div class="product-body">
+              <p class="product-name">X-ABACAXI <span class="badge-new">Especial</span></p>
+              <p class="product-desc">Pão, 2 hambúrgueres, queijo, presunto, ovo, bacon, salsicha, cheddar, tomate, batata palha, alface e milho</p>
+              <div class="product-footer">
+                <span class="product-price">R$ 19,00</span>
+                <button class="add-cart-btn add-td-cart-btn" data-name="X-ABACAXI" data-price="19.00" data-has-extras="true" title="Adicionar">
+                  <i class="fa fa-cart-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
         </div>
-      </div>
-      <!-- FIM GRID BEBIDAS -->
+      </section>
+
+      <!-- ─── BEBIDAS ─── -->
+      <section class="menu-section" id="section-bebidas">
+        <div class="section-header">
+          <div class="section-icon"><i class="fa fa-glass-cheers"></i></div>
+          <h2 class="section-title">Bebidas</h2>
+          <hr class="section-divider" />
+        </div>
+        <div class="products-grid">
+
+          <div class="product-card">
+            <img src="assets/refri-1.png" alt="Coca-Cola Lata" class="product-img" />
+            <div class="product-body">
+              <p class="product-name">Coca-Cola Lata</p>
+              <p class="product-desc">350ml gelada</p>
+              <div class="product-footer">
+                <span class="product-price">R$ 6,00</span>
+                <button class="add-cart-btn add-td-cart-btn" data-name="Coca-Cola Lata" data-price="6.00" data-has-extras="false" title="Adicionar">
+                  <i class="fa fa-cart-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <img src="assets/refri-2.png" alt="Guaraná Lata" class="product-img" />
+            <div class="product-body">
+              <p class="product-name">Guaraná Lata</p>
+              <p class="product-desc">350ml gelado</p>
+              <div class="product-footer">
+                <span class="product-price">R$ 6,00</span>
+                <button class="add-cart-btn add-td-cart-btn" data-name="Guaraná Lata" data-price="6.00" data-has-extras="false" title="Adicionar">
+                  <i class="fa fa-cart-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <div id="page-bottom"></div>
     </div>
-    <!-- FIM MENU -->
+    <!-- ═══ FIM MENU ═══ -->
 
-    <!-- MODAL CARRINHO -->
+
+    <!-- ═══ MODAL ADICIONAIS ═══ -->
+    <div class="extras-modal-overlay" id="extras-modal">
+      <div class="extras-modal-box">
+        <div class="extras-header">
+          <h3><i class="fa fa-plus-circle" style="color:var(--red);margin-right:0.4rem;"></i> Personalizar Pedido</h3>
+          <button class="modal-close" id="extras-modal-close"><i class="fa fa-times"></i></button>
+        </div>
+        <div class="extras-body">
+          <p class="extras-product-name" id="extras-product-name"></p>
+
+          <div>
+            <p class="extras-obs-label"><i class="fa fa-plus" style="color:var(--amber);"></i> Adicionais (+R$ 2,00 cada)</p>
+            <div class="extras-grid" id="extras-chips"></div>
+          </div>
+
+          <div>
+            <p class="extras-obs-label"><i class="fa fa-comment-alt" style="color:#6b7280;"></i> Observação</p>
+            <textarea class="form-textarea" id="extras-obs" placeholder="Ex: sem cebola, molho à parte, ponto da carne..."></textarea>
+          </div>
+        </div>
+        <div class="extras-footer">
+          <button class="btn-cancel" id="extras-cancel-btn">Cancelar</button>
+          <button class="btn-confirm" id="extras-confirm-btn">
+            <i class="fa fa-cart-plus"></i> Adicionar ao Carrinho
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══ MODAL CARRINHO ═══ -->
     <div class="modal-overlay" id="cart-modal">
       <div class="modal-box">
+        <div class="modal-handle"></div>
 
-        <!-- CABEÇALHO FIXO -->
         <div class="modal-header">
-          <div style="display:flex; align-items:center; justify-content:space-between;">
-            <h2 class="font-bold text-lg" style="display:flex; align-items:center; gap:0.5rem;">
-              <i class="fa fa-shopping-cart"></i>
+          <div class="modal-header-row">
+            <h2 class="modal-title">
+              <i class="fa fa-shopping-cart" style="color:var(--red);"></i>
               Meu Carrinho
-              <span id="cart-count-modal" style="background:#111827; color:#fff; border-radius:9999px; font-size:0.75rem; width:22px; height:22px; display:inline-flex; align-items:center; justify-content:center;"></span>
+              <span id="cart-count-modal" style="background:var(--red);color:#fff;border-radius:999px;font-size:0.7rem;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;"></span>
             </h2>
-            <button id="close-modal-btn" style="background:none; border:none; cursor:pointer; font-size:1.25rem; color:#6b7280; padding:0.25rem;" title="Fechar">
+            <button id="close-modal-btn" class="modal-close" title="Fechar">
               <i class="fa fa-times"></i>
             </button>
           </div>
         </div>
 
-        <!-- CORPO SCROLLÁVEL -->
         <div class="modal-body">
 
-          <!-- ITENS DO CARRINHO -->
+          <!-- Itens -->
           <div id="cart-items"></div>
 
-          <div class="divider"></div>
-
-          <!-- TIPO DO PEDIDO -->
-          <span class="section-label">
-            <i class="fa fa-motorcycle" style="margin-right:0.25rem;"></i>
-            Tipo do pedido
-          </span>
-          <div style="display:flex; gap:0.5rem; margin-bottom:0.75rem;">
-            <button class="order-type-option selected" id="btn-delivery" onclick="selectOrderType('delivery')">
-              <i class="fa fa-motorcycle"></i> Delivery
-            </button>
-            <button class="order-type-option" id="btn-retirada" onclick="selectOrderType('retirada')">
-              <i class="fa fa-store"></i> Retirada
-            </button>
+          <!-- Tipo do pedido -->
+          <div class="form-section">
+            <span class="form-label"><i class="fa fa-motorcycle"></i> Tipo do pedido</span>
+            <div class="btn-group">
+              <button class="option-btn selected-order" id="btn-delivery" onclick="selectOrderType('delivery')">
+                <i class="fa fa-motorcycle"></i> Delivery
+              </button>
+              <button class="option-btn" id="btn-retirada" onclick="selectOrderType('retirada')">
+                <i class="fa fa-store"></i> Retirada
+              </button>
+            </div>
           </div>
 
-          <!-- ENDEREÇO (só para delivery) -->
-          <div id="address-section">
-            <span class="section-label">
-              <i class="fa fa-map-marker-alt" style="margin-right:0.25rem;"></i>
-              Endereço de entrega
-            </span>
-            <input
-              type="text"
-              id="address-input"
-              placeholder="Rua, número, bairro..."
-            />
-            <p style="color:#dc2626; font-size:0.75rem; margin-top:0.25rem; display:none;" id="address-warn">
-              <i class="fa fa-exclamation-circle"></i> Digite seu endereço completo
-            </p>
+          <!-- Endereço -->
+          <div class="form-section" id="address-section">
+            <span class="form-label"><i class="fa fa-map-marker-alt"></i> Endereço de entrega</span>
+            <input type="text" class="form-input" id="address-input" placeholder="Rua, número, bairro..." />
+            <p class="form-warn" id="address-warn"><i class="fa fa-exclamation-circle"></i> Digite seu endereço completo</p>
           </div>
 
-          <div class="divider"></div>
-
-          <!-- FORMA DE PAGAMENTO -->
-          <span class="section-label">
-            <i class="fa fa-credit-card" style="margin-right:0.25rem;"></i>
-            Forma de pagamento
-          </span>
-          <div style="display:flex; gap:0.5rem; margin-bottom:0.75rem; flex-wrap:wrap;">
-            <button class="payment-option selected" id="btn-pix" onclick="selectPayment('pix')">
-              <i class="fa fa-qrcode"></i> Pix
-            </button>
-            <button class="payment-option" id="btn-cartao" onclick="selectPayment('cartao')">
-              <i class="fa fa-credit-card"></i> Cartão
-            </button>
-            <button class="payment-option" id="btn-dinheiro" onclick="selectPayment('dinheiro')">
-              <i class="fa fa-money-bill-wave"></i> Dinheiro
-            </button>
+          <!-- Forma de pagamento -->
+          <div class="form-section">
+            <span class="form-label"><i class="fa fa-credit-card"></i> Forma de pagamento</span>
+            <div class="btn-group">
+              <button class="option-btn selected-pay" id="btn-pix" onclick="selectPayment('pix')">
+                <i class="fa fa-qrcode"></i> Pix
+              </button>
+              <button class="option-btn" id="btn-cartao" onclick="selectPayment('cartao')">
+                <i class="fa fa-credit-card"></i> Cartão
+              </button>
+              <button class="option-btn" id="btn-dinheiro" onclick="selectPayment('dinheiro')">
+                <i class="fa fa-money-bill-wave"></i> Dinheiro
+              </button>
+            </div>
           </div>
 
-          <!-- TROCO (só para dinheiro) -->
-          <div id="change-area" style="display:none;">
-            <span class="section-label">
-              <i class="fa fa-coins" style="margin-right:0.25rem;"></i>
-              Troco para quanto?
-            </span>
-            <input
-              type="number"
-              id="change-value"
-              placeholder="Ex: 50"
-              min="0"
-              step="0.01"
-            />
-            <p id="change-info" style="font-size:0.75rem; color:#16a34a; margin-top:0.25rem; display:none;"></p>
+          <!-- Troco -->
+          <div class="form-section" id="change-area" style="display:none;">
+            <span class="form-label"><i class="fa fa-coins"></i> Troco para quanto?</span>
+            <input type="number" class="form-input" id="change-value" placeholder="Ex: 50,00" min="0" step="0.01" />
+            <p id="change-info" class="form-info"></p>
           </div>
 
         </div>
 
-        <!-- RODAPÉ FIXO COM TOTAL E BOTÃO -->
+        <!-- Footer -->
         <div class="modal-footer">
-          <div class="total-bar">
-            <span class="font-bold">Total do pedido</span>
-            <span class="font-bold text-lg" id="cart-total">R$ 0,00</span>
+          <div class="total-row">
+            <span class="total-label">Total do pedido</span>
+            <span class="total-value" id="cart-total">R$ 0,00</span>
           </div>
-          <button
-            id="checkout-btn"
-            class="bg-green-500 text-white font-bold rounded"
-            style="width:100%; padding:0.75rem; font-size:1rem; border:none; cursor:pointer; border-radius:0.5rem; transition: background 0.15s;"
-            onmouseover="this.style.background='#15803d'"
-            onmouseout="this.style.background='#22c55e'"
-          >
-            <i class="fa fa-whatsapp"></i> Finalizar Pedido via WhatsApp
+          <button id="checkout-btn" class="checkout-btn">
+            <i class="fab fa-whatsapp" style="font-size:1.1rem;"></i>
+            Finalizar Pedido via WhatsApp
           </button>
         </div>
 
       </div>
     </div>
-    <!-- FIM MODAL CARRINHO -->
+    <!-- ═══ FIM MODAL CARRINHO ═══ -->
 
-    <footer
-      class="w-full bg-red-900 py-2 text-white fixed bottom-0 flex items-center justify-center"
-      style="z-index:40;"
-    >
-      <button class="flex items-center gap-2 font-semibold" id="cart-btn">
-        (<span id="cart-count">0</span>) Ver Carrinho
+
+    <!-- ═══ FOOTER FIXO ═══ -->
+    <footer class="cart-footer">
+      <button class="cart-footer-btn" id="cart-btn">
         <i class="fa fa-shopping-cart"></i>
+        Ver Carrinho
+        <span class="cart-badge" id="cart-count">0</span>
       </button>
     </footer>
 
